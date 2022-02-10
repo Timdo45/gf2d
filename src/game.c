@@ -1,7 +1,9 @@
 #include <SDL.h>
+#include "simple_logger.h"
+
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
-#include "simple_logger.h"
+#include "entity.h"
 
 int main(int argc, char * argv[])
 {
@@ -62,7 +64,6 @@ int main(int argc, char * argv[])
         gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
         
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
-        slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     slog("---==== END ====---");
     return 0;
