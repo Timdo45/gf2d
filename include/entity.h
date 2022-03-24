@@ -3,79 +3,83 @@
 
 #include <SDL.h>
 #include "gf2d_sprite.h"
+#include "Collision.h"
+
 typedef struct ENTITY_S
 {
-	void       (*think)(struct Entity_S* self); /**<pointer to the think function*/
-	void       (*update)(struct Entity_S* self); /**<pointer to the update function*/
-	void       (*damage)(struct Entity_S* self, float damage, struct Entity_S* inflictor); /**<pointer to the think function*/
-	void       (*onDeath)(struct Entity_S* self, struct Entity_S* inflictor); /**<pointer to an funciton to call when the entity dies*/
-	Uint8 _inuse;  /**<this flag keeps track if this entity is active or free to reassign*/
-	Sprite *sprite; /**<sprite used to draw the sprite */
-	Vector2D position; /**<where our entity lives*/
-	Vector2D draw_offset;/**<draw position relative to the entity position*/
-	Vector2D velocity; /**<how fast enitty moves*/
-	Vector2D mins, maxs; /**<describe the bounding box around the entity*/
-	Vector2D scale;
-	float frame; /**<current frame to draw*/
+    Uint8       _inuse;     /**<this flag keeps track if this entity is active or free to reassign*/
+    Sprite     *sprite;     /**<sprite used to draw the sprite*/
+    float       frame;      /**<current frame to draw*/
+    Vector2D    draw_offset;/**<draw position relative to the entity position*/
+    Vector2D    position;   /**<where our entity lives*/
+    Vector2D    velocity;   /**<how our entity moves*/
+    Vector3D    rotation;   /**<how to rotate the sprite*/
+    Vector2D    draw_scale;  /**<the scale factor for drawing the sprite*/
+    int         faceSide;
+    int         boonType;
+    SDL_Rect    hitbox;  /**<describe the bounding box around this entity*/
+    SDL_Rect    attackHitbox;
+    void (*think)(struct ENTITY_S *self); /**<a pointer to a think function for this entity*/
+    void (*update)(struct ENTITY_S* self);
+    void (*onDeath)(struct ENTITY_S* self, struct Entity_S* other);
+    int         health;
+    Uint8       _isPlayer;
+    const char*       sprite_name;
+    Uint8       _isInteractable;
 
 }Entity;
-
 typedef struct
 {
-	Entity* entity_list;
-	Uint32  entity_count;
-
+    Uint32 max_entities;            /**<how many entities exist*/
+    Entity* entity_list;           /**<a big ole list of entities*/
 }EntityManager;
 
-static EntityManager entity_manager = { 0 };
+/**
+ * @brief initialize the internal entity entity_manager_init
+ * @note must be called before other entity functions
+ * @param max_entities how many concurrent entities will be supported
+ */
+void entity_manager_init(Uint32 max_entities);
 
 /**
- * @brief initializes the entity subsystem
- * @param maxEntities the limit on number of entities that can exist at the same time
+ * @brief draws all active entities to the screen
  */
-void entity_system_init(Uint32 maxEntities);
+void entity_manager_draw_all();
 
 /**
- * @brief provide a pointer to a new empty entity
- * @return NULL on error or a valid entity pointer otherwise
+ * @brief runs any think function for all active entities
  */
-Entity* entity_new();
-
-/**
- * @brief free a previously created entity from memory
- * @param self the entity in question
- */
-void entity_free(Entity* self);
+void entity_manager_think_all();
 
 
 /**
- * @brief Draw an entity in the current frame
- * @param self the entity in question
+ * @brief free all active entities
+ * @note for use in level transitions.
  */
-void entity_draw(Entity* self);
+void entity_manager_clear();
 
 /**
- * @brief draw ALL active entities
+ * @brief get a new empty entity
+ * @returns NULL on error, or a pointer to a blank entity
  */
-void entity_draw_all();
+Entity *entity_new();
 
 /**
- * @brief Call an entity's think function if it exists
- * @param self the entity in question
+ * @brief draws the given entity
+ * @param entity the entity to draw
  */
-void entity_think(Entity* self);
+void entity_draw(Entity *entity);
 
 /**
- * @brief run the think functions for ALL active entities
+ * @brief free the memory of an entity
+ * @param entity the entity to free
  */
-void entity_think_all();
+void entity_free(Entity *entity);
 
-/**
- * @brief run the update functions for ALL active entities
- */
+void entity_update(Entity* ent);
+
 void entity_update_all();
 
-
-
+EntityManager *entity_manager_get();
 
 #endif
