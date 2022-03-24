@@ -636,6 +636,7 @@ void player_save(Entity *self, char* filename)
 
     dashMax -= tempDashes;
     maxHealth -= tempHealth;
+    Revives -= 1;
 
     thing = equippedWeapon;
     json = sj_object_new();
@@ -688,16 +689,19 @@ void player_set_weapon(Entity *self)
     if (SDL_strcmp(equippedWeapon, "Sword") && hasSpear == 1)
     {
         equippedWeapon = "Spear";
+        slog("switched to spear");
         return;
     }
     if (SDL_strcmp(equippedWeapon, "Spear") && hasGauntlets == 1)
     {
         equippedWeapon = "Gauntlets";
+        slog("switched to Gauntlets");
         return;
     }
     if (SDL_strcmp(equippedWeapon, "Gauntlets") && hasSword == 1)
     {
         equippedWeapon = "Sword";
+        slog("switched to Sword");
         return;
     }
 }
@@ -755,6 +759,7 @@ void player_gain_dash()
 void player_gain_revives()
 {
     Revives+= 1;
+    tempRevives += 1;
 }
 
 
