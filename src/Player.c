@@ -139,6 +139,7 @@ void player_think(Entity *self)
         }
         else
         {
+
             Runes -= 50;
         }
     }
@@ -708,13 +709,12 @@ void player_set_weapon(Entity *self)
 
 void player_die(Entity* self, Entity* other)
 {
-    if (Revives == 0)
+    if (Revives <= 0)
     {
         player_save(self, "config/player1.json");
-        slog("player had died");
+        slog("player has died");
         slog("respawning at rest point");
         entity_free(self);
-        SDL_Delay(1000);
         self = player_new(vector2d(100, 100), "config/player1.json");
     }
     else
@@ -722,6 +722,7 @@ void player_die(Entity* self, Entity* other)
         slog("player has died, reviving");
         self->health = maxHealth;
         SDL_Delay(1000);
+        
         Revives--;
     }
 }

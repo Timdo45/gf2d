@@ -36,12 +36,11 @@ void level_spawn_boon(Vector2D position)
 
 void level_clear()
 {
-
 }
 
 void level_spawn_entities()
 {
-
+    
 }
 void level_draw(Level* level)
 {

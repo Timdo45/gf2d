@@ -2,7 +2,7 @@
   "player": {
     "sprite": "images/space_bug_top.png",
     "Health": "50",
-    "Gold": "10",
+    "Gold": "0",
     "_isPlayer": "1",
     "dashMax": "1",
     "Revives": "1",

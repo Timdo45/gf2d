@@ -57,7 +57,6 @@ int main(int argc, char * argv[])
     Boons_new(vector2d(400, 500),2);
     Boons_new(vector2d(700, 500),3);
     Boons_new(vector2d(300, 500),4);
-
     /*main game loop*/
     while(!done)
     {
