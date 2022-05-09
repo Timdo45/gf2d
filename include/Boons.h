@@ -1,3 +1,5 @@
+#ifndef __BOONS_H__
+#define __BOONS_H__
 #include "entity.h"
 
 
@@ -18,3 +20,5 @@ void Boons_health(Entity* self, Entity* player);
 void Boons_dash(Entity* self, Entity* player);
 
 void Boons_revive(Entity* self, Entity* player);
+
+#endif

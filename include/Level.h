@@ -1,3 +1,5 @@
+#ifndef __LEVEL_H__
+#define __LEVEL_H__
 #include "Collision.h"
 #include "Tile_Map.h"
 #include "gfc_list.h"
@@ -28,3 +30,7 @@ void level_clear();
 void level_spawn_entities();
 
 void level_draw();
+
+Level* level_transition(Level* currentLevel);
+
+#endif

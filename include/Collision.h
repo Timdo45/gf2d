@@ -4,11 +4,7 @@
 #include "gfc_vector.h"
 #include "simple_logger.h"
 
-typedef struct {
-	float x,y;
-	float w, h;
 
-}Rect;
 
 /**
 * @brief test if rect collides with other rect

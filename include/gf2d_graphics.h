@@ -17,7 +17,7 @@
  * @param fullscreen if you want the window to render full screen or not
  */
 void gf2d_graphics_initialize(
-    char *windowName,
+    char* windowName,
     int viewWidth,
     int viewHeight,
     int renderWidth,
@@ -39,10 +39,15 @@ void gf2d_graphics_set_frame_delay(Uint32 frameDelay);
 float gf2d_graphics_get_frames_per_second();
 
 /**
+ * @brief get the current rendering resolution
+ */
+Vector2D gf2d_graphics_get_resolution();
+
+/**
  * @brief get the current rendering context
  * @return NULL on error or the current rendering context
  */
-SDL_Renderer *gf2d_graphics_get_renderer();
+SDL_Renderer* gf2d_graphics_get_renderer();
 
 /**
  * @brief render the current frame to screen
@@ -62,7 +67,7 @@ void gf2d_graphics_clear_screen();
  * @param h the height of the surface to create
  * @return NULL on error or the SDL_Surface created
  */
-SDL_Surface *gf2d_graphics_create_surface(Uint32 w,Uint32 h);
+SDL_Surface* gf2d_graphics_create_surface(Uint32 w, Uint32 h);
 
 /**
  * @brief draw a surface to the current drawing context
@@ -70,13 +75,13 @@ SDL_Surface *gf2d_graphics_create_surface(Uint32 w,Uint32 h);
  * @param srcRect the clip rect to draw from (if NULL, whole surface is used)
  * @param dstRect the position data of the rext is used for the destination position
  */
-void gf2d_graphics_blit_surface_to_screen(SDL_Surface *surface,const SDL_Rect * srcRect,SDL_Rect * dstRect);
+void gf2d_graphics_blit_surface_to_screen(SDL_Surface* surface, const SDL_Rect* srcRect, SDL_Rect* dstRect);
 
 /**
  * @brief convert an SDL Surface to the format compatible with the rendering context
  * @param surface a pointer to your surface pointer.  The surface is automatically freed upon success
  * @returns NULL on error, or the new SDL Surface upon success
  */
-SDL_Surface *gf2d_graphics_screen_convert(SDL_Surface **surface);
+SDL_Surface* gf2d_graphics_screen_convert(SDL_Surface** surface);
 
 #endif

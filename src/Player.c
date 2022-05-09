@@ -3,6 +3,7 @@
 #include "simple_json.h"
 #include "gf2d_draw.h"
 #include "Level.h"
+#include "gfc_input.h"
 
 int Health;
 int dashMax;
@@ -29,7 +30,6 @@ Uint32 otherTime = 0;
 int tempHealth;
 int tempDashes;
 int tempRevives;
-
 
 void player_think(Entity *self)
 {
@@ -88,6 +88,7 @@ void player_think(Entity *self)
         {
             maxHealth += 10;
             Runes -= 50;
+            slog("Max Health: (%i)", maxHealth);
         }
     }
     if (keys[SDL_SCANCODE_2])
@@ -115,6 +116,7 @@ void player_think(Entity *self)
         {
             Runes -= 50;
             dashMax++;
+            slog("gained an additional dash. dash max: (%i)",dashMax);
         }
     }
     if (keys[SDL_SCANCODE_4])
@@ -128,6 +130,7 @@ void player_think(Entity *self)
         {
             Runes -= 50;
             Revives++;
+            slog("gained an additional revive. number of revives: (%i)", Revives);
         }
     }
     if (keys[SDL_SCANCODE_5])
@@ -365,11 +368,9 @@ void player_activate(Entity* self)
 {
     Entity* other;
     other = player_touch(self, self->hitbox);
-    slog("checking");
     if (!other)return;
     if (!other->_isInteractable)return;
     if (self == other)return;
-    slog("checking2");
 
     other->onDeath(other,self);
 }
@@ -421,6 +422,10 @@ void player_update(Entity* self)
         dashes = dashMax;
         otherTime = currentTime;
     }
+    
+    
+    gfc_text_draw_line("Equipped Weapon:", FT_H1, gfc_color(1, 0, 0, 1), vector2d(0, 600));
+    gfc_text_draw_line(equippedWeapon, FT_H1, gfc_color(1, 0, 0, 1), vector2d(240, 600));
 
 }
 
@@ -448,7 +453,7 @@ int get_face_direction(float angle)
 Entity* player_new(Vector2D position, char *filename)
 {
     SJson* json, *pjson;
-    Rect hitbox;
+    
     const char* weapon;
     ent = entity_new();
     if (!ent)
@@ -475,7 +480,7 @@ Entity* player_new(Vector2D position, char *filename)
     ent->sprite_name = spriteName;
     if (ent->sprite_name)
     {
-        ent->sprite = gf2d_sprite_load_all(ent->sprite_name, 128, 128, 16);
+        ent->sprite = gf2d_sprite_load_all(ent->sprite_name, 128, 128, 20);
     }
     else
     {
@@ -602,7 +607,7 @@ void player_move(Entity *self)
     const Uint8* keys;
     if (!self)return;
     self->frame = (self->frame + 0.1);
-    if (self->frame >= 16)self->frame = 0;
+    if (self->frame >= 20)self->frame = 0;
 
     SDL_GetMouseState(&mx, &my);
     direction.x = mx - self->position.x;
@@ -690,21 +695,22 @@ void player_set_weapon(Entity *self)
     if (SDL_strcmp(equippedWeapon, "Sword") && hasSpear == 1)
     {
         equippedWeapon = "Spear";
-        slog("switched to spear");
+        slog("switched to %s",equippedWeapon);
         return;
     }
     if (SDL_strcmp(equippedWeapon, "Spear") && hasGauntlets == 1)
     {
         equippedWeapon = "Gauntlets";
-        slog("switched to Gauntlets");
+        slog("switched to %s", equippedWeapon);
         return;
     }
     if (SDL_strcmp(equippedWeapon, "Gauntlets") && hasSword == 1)
     {
         equippedWeapon = "Sword";
-        slog("switched to Sword");
+        slog("switched to %s", equippedWeapon);
         return;
     }
+   
 }
 
 void player_die(Entity* self, Entity* other)
